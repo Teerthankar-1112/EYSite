@@ -1,13 +1,15 @@
-<!doctype html>
-<html>
-  <head>
-    <title>FLASK CSV File Upload</title>
-  </head>
-  <body>
-    <h1>Upload your CSV file</h1>
-    <form method="POST" action="" enctype="multipart/form-data">
-      <p><input type="file" name="file"></p>
-      <p><input type="submit" value="Submit"></p>
-    </form>
-  </body>
-</html>
+{% extends 'base.html' %}
+
+{% block content %}
+    <h1>{% block title %} A SimpleBlog3! {% endblock %}</h1>
+    {% for post in posts %}
+        <a href="{{ url_for('post', post_id=post['id']) }}">
+            <h2>{{ post['title'] }}</h2>
+        </a>
+        <span class="badge badge-primary">{{ post['created'] }}</span>
+        <a href="{{ url_for('edit', id=post['id']) }}">
+            <span class="badge badge-warning">Edit</span>
+        </a>
+        <hr>
+    {% endfor %}
+{% endblock %}
