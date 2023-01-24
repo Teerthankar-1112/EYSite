@@ -9,14 +9,14 @@ def get_db_connection():
     return conn
 
 
-def get_post(post_id):
+def get_data(data_id):
     conn = get_db_connection()
-    post = conn.execute('SELECT * FROM posts WHERE id = ?',
-                        (post_id,)).fetchone()
+    data = conn.execute('SELECT * FROM data WHERE id = ?',
+                        (data_id,)).fetchone()
     conn.close()
-    if post is None:
+    if data is None:
         abort(404)
-    return post
+    return data
 
 
 application = Flask(__name__)
@@ -26,21 +26,21 @@ application.config['SECRET_KEY'] = 'secretsecretsecretkey'
 @application.route('/')
 def index():
     conn = get_db_connection()
-    posts = conn.execute('SELECT * FROM posts').fetchall()
+    data = conn.execute('SELECT * FROM data').fetchall()
     conn.close()
-    return render_template('index.html', posts=posts)
+    return render_template('index.html', data=data)
 
 
 @application.route('/<int:post_id>')
-def post(post_id):
-    post = get_post(post_id)
-    return render_template('post.html', post=post)
+def data(data_id):
+    data = get_data(data_id)
+    return render_template('post.html', data=data)
 
 
 # Important Create Post Function --------------------------------
-@application.route('/create', methods=('GET', 'POST'))
+@application.route('/create', methods=('GET', 'DATA'))
 def create():
-    if request.method == 'POST':
+    if request.method == 'DATA':
         title = request.form['title']
         content = request.form['content']
 
